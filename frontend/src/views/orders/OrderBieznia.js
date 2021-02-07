@@ -14,6 +14,7 @@ import ProductService from "../../services/product.service";
 import { messageAddOrder } from "../../actions/order";
 
 import moment from "moment";
+import orderService from "../../services/order.service";
 
 const Styles = styled.div`
   .container {
@@ -65,28 +66,60 @@ function OrderBieznia() {
   const [date, setDate] = useState(new Date());
   const [itemCount, setItemCount] = useState(1);
   const [daysCount, setDaysCount] = useState(1);
+  const [availiableQuantity, setAvailiableQuantity] = useState(2);
+  const [busyProductCount, setBusyProductCount] = useState(0);
   const itemIdDb = 1;
   const [price, setPrice] = useState(0);
   const [success, setSuccess] = useState(false);
   const { message } = useSelector((state) => state.message);
   const dispatch = useDispatch();
   let totalPrice = price * daysCount * itemCount;
+  let options = [];
+  var counts = {};
+  var arr = [];
 
   useEffect(() => {
     if (currentUser) {
       setAccess(currentUser.roles.includes("ROLE_USER"));
     }
-  }, [currentUser]);
-  useEffect(() => {
     ProductService.getItemPrice(itemIdDb).then((response) => {
       setPrice(response.data);
     });
+    orderService.getBiezniaUnavailiable().then((response) => {
+      var len = response.data.length;
+      setAvailiableQuantity(availiableQuantity - len);
+    });
   }, []);
+
+  const getUniqueBusyProductCount = () => {
+    orderService
+      .test(
+        moment(date[0]).format("YYYY-MM-DD HH:mm:ss:SSS"),
+        moment(date[1]).format("YYYY-MM-DD HH:mm:ss:SSS")
+      )
+      .then((response) => {
+        arr = response.data;
+        console.log(arr.length); //robi sie ale na koncu ehhh
+      });
+    setBusyProductCount(arr.length);
+    getOptions();
+  };
+
+  const getOptions = () => {
+    options = [];
+    console.log("availiable =" + availiableQuantity);
+    console.log("buys =" + busyProductCount);
+    for (var i = 0; i < availiableQuantity - busyProductCount; i++) {
+      options.push(i+1);
+    }
+    console.log(options);
+  };
 
   const onChange = (date) => {
     setDate(date);
     let diffTime = Math.abs(date[1] - date[0]);
     setDaysCount(Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
+    getUniqueBusyProductCount();
   };
 
   const sendRequest = () => {
@@ -101,6 +134,9 @@ function OrderBieznia() {
     };
     dispatch(messageAddOrder(data));
     setSuccess(true);
+  };
+
+  const tezd = () => {
   };
   return (
     <div>
@@ -117,7 +153,14 @@ function OrderBieznia() {
           ) : (
             <Styles>
               <Container>
-                <h1>Bieżnia</h1>
+                <h1>
+                  Bieżnia{" "}
+                  {availiableQuantity ? (
+                    ""
+                  ) : (
+                    <span>(aktualnie niedostępny)</span>
+                  )}
+                </h1>
                 <Row>
                   <Col>
                     <Calendar
@@ -135,8 +178,13 @@ function OrderBieznia() {
                       as="select"
                       onChange={(e) => setItemCount(e.target.value)}
                     >
-                      <option>1</option>
-                      <option>2</option>
+                      {options.map((option, index) => {
+                        return (
+                          <option key={index} value={option}>
+                            {option}
+                          </option>
+                        );
+                      })}
                     </Form.Control>
                   </Col>
                   <Col id="price-col">
@@ -144,8 +192,15 @@ function OrderBieznia() {
                     <h3>{totalPrice}zł</h3>
                   </Col>
                 </Row>
-                <Button id="submitButton" type="submit" onClick={sendRequest}>
+                <Button
+                  id="submitButton"
+                  onClick={sendRequest}
+                  disabled={availiableQuantity ? false : true}
+                >
                   Zarezerwuj
+                </Button>
+                <Button id="submitButton" onClick={tezd}>
+                  Test
                 </Button>
               </Container>
             </Styles>

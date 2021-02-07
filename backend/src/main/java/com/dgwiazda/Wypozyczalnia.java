@@ -14,10 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @SpringBootApplication
 @Configuration
@@ -186,8 +183,8 @@ public class Wypozyczalnia {
 		userRepository.save(admin);
 
 		Order order1 = new Order(1L,
-				LocalDateTime.of(2021, 1, 22, 0, 1),
-				LocalDateTime.of(2021, 1, 25, 23, 59),
+				LocalDateTime.of(2021, 2, 22, 0, 1),
+				LocalDateTime.of(2021, 2, 25, 23, 59),
 				100F,
 				admin);//bieznia1
 		Order order2 = new Order(2L,

@@ -17,7 +17,7 @@ const Styles = styled.div`
       }
 `;
 
-const Header = () => {
+const NavigationBar = () => {
   const [showAdminBoard, setShowAdminBoard] = useState(false);
 
   const { user: currentUser } = useSelector((state) => state.auth);
@@ -36,7 +36,7 @@ const Header = () => {
     <Styles>
       <Navbar bg="dark" variant="dark" fixed="top">
         <Navbar.Brand href="/" className="mr-auto ml-5">
-          PowerOfMusic
+          Hehe
         </Navbar.Brand>
         <Nav>
           {showAdminBoard && (
@@ -55,8 +55,8 @@ const Header = () => {
               title={currentUser.username}
               id="basic-nav-dropdown"
             >
-              <NavDropdown.Item href="/orders">Zamówienia</NavDropdown.Item>
-              <NavDropdown.Item href="/profile">Profil</NavDropdown.Item>
+              <NavDropdown.Item href="/user/orders">Zamówienia</NavDropdown.Item>
+              <NavDropdown.Item href="/user/profile">Profil</NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item href="/signin" onClick={logOut}>
                 Wyloguj
@@ -73,4 +73,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default NavigationBar;

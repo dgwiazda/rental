@@ -10,7 +10,7 @@ public class ProductDTO {
     private Float price;
     private Boolean availiable;
     private String description;
-    private Long categoryId;
+    private String category;
 
     public Long getId() {
         return id;
@@ -44,11 +44,11 @@ public class ProductDTO {
         this.description = description;
     }
 
-    public Long getCategoryId() {
-        return categoryId;
+    public String getCategory() {
+        return category;
     }
 
-    public void setCategoryId(Long categoryId) {
-        this.categoryId = categoryId;
+    public void setCategory(String category) {
+        this.category = category;
     }
 }

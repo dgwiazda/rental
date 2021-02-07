@@ -53,9 +53,8 @@ function Footer() {
             <footer>
                 <div id="almost-bottom">
                     <Container id="authors">
-                        <h3>Wykonali</h3>
+                        <h3>Wykonał</h3>
                         <h5>Damian Gwiazda</h5>
-                        <h5>Kamil Katusza</h5>
                     </Container>
                     <Container>
                         <Row>

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDateTime;
 
-public class OrderDTO {
+public class AddOrderDTO {
 
     private Long id;
 
@@ -16,13 +16,19 @@ public class OrderDTO {
 
     private Float price;
 
-    private String user;
+    private Long userId;
 
     private Long productId;
 
     private Long quantity;
 
-    private String productName;
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public LocalDateTime getRentDateFrom() {
         return rentDateFrom;
@@ -48,12 +54,12 @@ public class OrderDTO {
         this.price = price;
     }
 
-    public String getUser() {
-        return user;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setUser(String user) {
-        this.user = user;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public Long getProductId() {
@@ -70,22 +76,6 @@ public class OrderDTO {
 
     public void setQuantity(Long quantity) {
         this.quantity = quantity;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getProductName() {
-        return productName;
-    }
-
-    public void setProductName(String productName) {
-        this.productName = productName;
     }
 }
 

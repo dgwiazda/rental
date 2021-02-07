@@ -68,10 +68,10 @@ const BoardAdmin = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    getOrders();
     if (currentUser) {
       setAccess(currentUser.roles.includes("ROLE_ADMIN"));
     }
+    getOrders();
   }, [currentUser]);
 
   const getOrders = () => {
@@ -208,6 +208,7 @@ const BoardAdmin = () => {
 
   async function getMonthly() {
     await AdminService.getMonthlySales().then((response) => {
+      response.data.push(0);
       setChartData(response.data);
     });
     setChartLabel("Sprzedaż miesięczna tego roku");
@@ -228,12 +229,14 @@ const BoardAdmin = () => {
   }
 
   async function getAnnually() {
+    var l;
     await AdminService.getAnnuallySales().then((response) => {
       setChartData(response.data);
+      l = chartData.length;
     });
     setChartLabel("Sprzedaż roczna");
     let years = [];
-    for (var i = 0; i < chartData.length; i++) {
+    for (var i = 0; i < l; i++) {
       years.push(2021 + i);
     }
     setChartLegend(years);
@@ -288,11 +291,12 @@ const BoardAdmin = () => {
                   <thead>
                     <tr>
                       <th>#</th>
-                      <th>Rent Date From</th>
-                      <th>Rent Date To</th>
-                      <th>Price</th>
-                      <th>User Id</th>
-                      <th>Products Id</th>
+                      <th>Od</th>
+                      <th>Do</th>
+                      <th>Cena</th>
+                      <th>Username</th>
+                      <th>Produkty ID</th>
+                      <th>Produkt</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -301,11 +305,12 @@ const BoardAdmin = () => {
                         <td>{order.id}</td>
                         <td>{order.rentDateFrom}</td>
                         <td>{order.rentDateTo}</td>
-                        <td>{order.price}</td>
-                        <td>{order.userId}</td>
+                        <td>{order.price}zł</td>
+                        <td>{order.user}</td>
                         <td>
                           {ordersSetProducts(order.productId, order.quantity)}
                         </td>
+                        <td>{order.productName}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -334,18 +339,18 @@ const BoardAdmin = () => {
                   <thead>
                     <tr>
                       <th>#</th>
-                      <th>Category ID</th>
-                      <th>Price</th>
-                      <th>Description</th>
-                      <th>Availiable</th>
+                      <th>Kategoria</th>
+                      <th>Cena</th>
+                      <th>Opis</th>
+                      <th>Dostępny</th>
                     </tr>
                   </thead>
                   <tbody>
                     {products.map((product) => (
                       <tr key={product.id}>
                         <td>{product.id}</td>
-                        <td>{product.categoryId}</td>
-                        <td>{product.price}</td>
+                        <td>{product.category}</td>
+                        <td>{product.price}zł</td>
                         <td>{product.description}</td>
                         <td>
                           {product.availiable.toString()}
@@ -385,9 +390,9 @@ const BoardAdmin = () => {
                   <thead>
                     <tr>
                       <th>#</th>
-                      <th>Username</th>
-                      <th>Password</th>
+                      <th>Nazwa użytkownika</th>
                       <th>Email</th>
+                      <th>Ilość zamówień</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -395,8 +400,8 @@ const BoardAdmin = () => {
                       <tr key={user.id}>
                         <td>{user.id}</td>
                         <td>{user.username}</td>
-                        <td>{user.password}</td>
                         <td>{user.email}</td>
+                        <td>{user.ordersCount}</td>
                       </tr>
                     ))}
                   </tbody>

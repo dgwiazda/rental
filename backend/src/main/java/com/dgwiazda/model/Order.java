@@ -51,8 +51,8 @@ public class Order {
         return id;
     }
 
-    public void setId(Long orderId) {
-        this.id = orderId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public LocalDateTime getRentDateFrom() {
@@ -75,8 +75,8 @@ public class Order {
         return price;
     }
 
-    public void setPrice(Float prize) {
-        this.price = prize;
+    public void setPrice(Float price) {
+        this.price = price;
     }
 
     public User getUserId() {

@@ -1,11 +1,13 @@
 package com.dgwiazda.controller;
 
+import com.dgwiazda.dto.GetUsersDTO;
 import com.dgwiazda.dto.OrderDTO;
 import com.dgwiazda.dto.ProductDTO;
 import com.dgwiazda.model.Order;
 import com.dgwiazda.model.Product;
 import com.dgwiazda.model.User;
 import com.dgwiazda.payload.response.MessageResponse;
+import com.dgwiazda.repository.CategoryRepository;
 import com.dgwiazda.repository.OrderRepository;
 import com.dgwiazda.repository.ProductRepository;
 import com.dgwiazda.repository.UserRepository;
@@ -43,12 +45,13 @@ public class AdminController {
 			orderDTO.setQuantity((long)o.getProducts().size());
 			orderDTO.setRentDateFrom(o.getRentDateFrom());
 			orderDTO.setRentDateTo(o.getRentDateTo());
-			orderDTO.setUserId(o.getUserId().getId());
+			orderDTO.setUser(o.getUserId().getUsername());
 			long productId = 0;
 			for (Product p: o.getProducts()
 				 ) {
 				productId = p.getId();
 			}
+			orderDTO.setProductName(productRepository.findById(o.getProducts().stream().findFirst().get().getId()).get().getDescription());
 			orderDTO.setProductId(productId - orderDTO.getQuantity() + 1);
 			orders.add(orderDTO);
 		}
@@ -65,12 +68,13 @@ public class AdminController {
 			orderDTO.setQuantity((long)o.getProducts().size());
 			orderDTO.setRentDateFrom(o.getRentDateFrom());
 			orderDTO.setRentDateTo(o.getRentDateTo());
-			orderDTO.setUserId(o.getUserId().getId());
+			orderDTO.setUser(o.getUserId().getUsername());
 			long productId = 0;
 			for (Product p: o.getProducts()
 			) {
 				productId = p.getId();
 			}
+			orderDTO.setProductName(productRepository.findById(o.getProducts().stream().findFirst().get().getId()).get().getDescription());
 			orderDTO.setProductId(productId - orderDTO.getQuantity() + 1);
 			orders.add(orderDTO);
 		}
@@ -87,12 +91,13 @@ public class AdminController {
 			orderDTO.setQuantity((long)o.getProducts().size());
 			orderDTO.setRentDateFrom(o.getRentDateFrom());
 			orderDTO.setRentDateTo(o.getRentDateTo());
-			orderDTO.setUserId(o.getUserId().getId());
+			orderDTO.setUser(o.getUserId().getUsername());
 			long productId = 0;
 			for (Product p: o.getProducts()
 			) {
 				productId = p.getId();
 			}
+			orderDTO.setProductName(productRepository.findById(o.getProducts().stream().findFirst().get().getId()).get().getDescription());
 			orderDTO.setProductId(productId - orderDTO.getQuantity() + 1);
 			orders.add(orderDTO);
 		}
@@ -109,12 +114,13 @@ public class AdminController {
 			orderDTO.setQuantity((long)o.getProducts().size());
 			orderDTO.setRentDateFrom(o.getRentDateFrom());
 			orderDTO.setRentDateTo(o.getRentDateTo());
-			orderDTO.setUserId(o.getUserId().getId());
+			orderDTO.setUser(o.getUserId().getUsername());
 			long productId = 0;
 			for (Product p: o.getProducts()
 			) {
 				productId = p.getId();
 			}
+			orderDTO.setProductName(productRepository.findById(o.getProducts().stream().findFirst().get().getId()).get().getDescription());
 			orderDTO.setProductId(productId - orderDTO.getQuantity() + 1);
 			orders.add(orderDTO);
 		}
@@ -131,12 +137,13 @@ public class AdminController {
 			orderDTO.setQuantity((long)o.getProducts().size());
 			orderDTO.setRentDateFrom(o.getRentDateFrom());
 			orderDTO.setRentDateTo(o.getRentDateTo());
-			orderDTO.setUserId(o.getUserId().getId());
+			orderDTO.setUser(o.getUserId().getUsername());
 			long productId = 0;
 			for (Product p: o.getProducts()
 			) {
 				productId = p.getId();
 			}
+			orderDTO.setProductName(productRepository.findById(o.getProducts().stream().findFirst().get().getId()).get().getDescription());
 			orderDTO.setProductId(productId - orderDTO.getQuantity() + 1);
 			orders.add(orderDTO);
 		}
@@ -153,12 +160,13 @@ public class AdminController {
 			orderDTO.setQuantity((long)o.getProducts().size());
 			orderDTO.setRentDateFrom(o.getRentDateFrom());
 			orderDTO.setRentDateTo(o.getRentDateTo());
-			orderDTO.setUserId(o.getUserId().getId());
+			orderDTO.setUser(o.getUserId().getUsername());
 			long productId = 0;
 			for (Product p: o.getProducts()
 			) {
 				productId = p.getId();
 			}
+			orderDTO.setProductName(productRepository.findById(o.getProducts().stream().findFirst().get().getId()).get().getDescription());
 			orderDTO.setProductId(productId - orderDTO.getQuantity() + 1);
 			orders.add(orderDTO);
 		}
@@ -174,7 +182,7 @@ public class AdminController {
 			ProductDTO productDTO = new ProductDTO();
 			productDTO.setId(p.getId());
 			productDTO.setAvailiable(p.isAvailiable());
-			productDTO.setCategoryId(p.getCategory().getId());
+			productDTO.setCategory(p.getCategory().getCategory().name());
 			productDTO.setDescription(p.getDescription());
 			productDTO.setPrice(p.getPrice());
 			products.add(productDTO);
@@ -189,7 +197,7 @@ public class AdminController {
 			ProductDTO productDTO = new ProductDTO();
 			productDTO.setId(p.getId());
 			productDTO.setAvailiable(p.isAvailiable());
-			productDTO.setCategoryId(p.getCategory().getId());
+			productDTO.setCategory(p.getCategory().getCategory().name());
 			productDTO.setDescription(p.getDescription());
 			productDTO.setPrice(p.getPrice());
 			products.add(productDTO);
@@ -204,7 +212,7 @@ public class AdminController {
 			ProductDTO productDTO = new ProductDTO();
 			productDTO.setId(p.getId());
 			productDTO.setAvailiable(p.isAvailiable());
-			productDTO.setCategoryId(p.getCategory().getId());
+			productDTO.setCategory(p.getCategory().getCategory().name());
 			productDTO.setDescription(p.getDescription());
 			productDTO.setPrice(p.getPrice());
 			products.add(productDTO);
@@ -219,7 +227,7 @@ public class AdminController {
 			ProductDTO productDTO = new ProductDTO();
 			productDTO.setId(p.getId());
 			productDTO.setAvailiable(p.isAvailiable());
-			productDTO.setCategoryId(p.getCategory().getId());
+			productDTO.setCategory(p.getCategory().getCategory().name());
 			productDTO.setDescription(p.getDescription());
 			productDTO.setPrice(p.getPrice());
 			products.add(productDTO);
@@ -234,7 +242,7 @@ public class AdminController {
 			ProductDTO productDTO = new ProductDTO();
 			productDTO.setId(p.getId());
 			productDTO.setAvailiable(p.isAvailiable());
-			productDTO.setCategoryId(p.getCategory().getId());
+			productDTO.setCategory(p.getCategory().getCategory().name());
 			productDTO.setDescription(p.getDescription());
 			productDTO.setPrice(p.getPrice());
 			products.add(productDTO);
@@ -256,28 +264,73 @@ public class AdminController {
 	}
 
 	@GetMapping("/users")
-	List<User> getUsers() {
-		return userRepository.findAll();
+	List<GetUsersDTO> getUsers() {
+		List<GetUsersDTO> users = new ArrayList<>();
+		for (User u : userRepository.findAll()) {
+			GetUsersDTO userDTO = new GetUsersDTO();
+			userDTO.setId(u.getId());
+			userDTO.setEmail(u.getEmail());
+			userDTO.setUsername(u.getUsername());
+			userDTO.setOrdersCount(orderRepository.getOrderCount(u.getId()));
+			users.add(userDTO);
+		}
+		return users;
 	}
 
 	@GetMapping("/users/sort-username-asc")
-	List<User> sortUsersUsernameAsc() {
-		return userRepository.findByOrderByUsernameAsc();
+	List<GetUsersDTO> sortUsersUsernameAsc() {
+		List<GetUsersDTO> users = new ArrayList<>();
+		for (User u : userRepository.findByOrderByUsernameAsc()) {
+			GetUsersDTO userDTO = new GetUsersDTO();
+			userDTO.setId(u.getId());
+			userDTO.setEmail(u.getEmail());
+			userDTO.setUsername(u.getUsername());
+			userDTO.setOrdersCount(orderRepository.getOrderCount(u.getId()));
+			users.add(userDTO);
+		}
+		return users;
 	}
 
 	@GetMapping("/users/sort-username-desc")
-	List<User> sortUsersUsernameDesc() {
-		return userRepository.findByOrderByUsernameDesc();
+	List<GetUsersDTO> sortUsersUsernameDesc() {
+		List<GetUsersDTO> users = new ArrayList<>();
+		for (User u : userRepository.findByOrderByUsernameDesc()) {
+			GetUsersDTO userDTO = new GetUsersDTO();
+			userDTO.setId(u.getId());
+			userDTO.setEmail(u.getEmail());
+			userDTO.setUsername(u.getUsername());
+			userDTO.setOrdersCount(orderRepository.getOrderCount(u.getId()));
+			users.add(userDTO);
+		}
+		return users;
 	}
 
 	@GetMapping("/users/sort-email-asc")
-	List<User> sortUsersEmailAsc() {
-		return userRepository.findByOrderByEmailAsc();
+	List<GetUsersDTO> sortUsersEmailAsc() {
+		List<GetUsersDTO> users = new ArrayList<>();
+		for (User u : userRepository.findByOrderByEmailAsc()) {
+			GetUsersDTO userDTO = new GetUsersDTO();
+			userDTO.setId(u.getId());
+			userDTO.setEmail(u.getEmail());
+			userDTO.setUsername(u.getUsername());
+			userDTO.setOrdersCount(orderRepository.getOrderCount(u.getId()));
+			users.add(userDTO);
+		}
+		return users;
 	}
 
 	@GetMapping("/users/sort-email-desc")
-	List<User> sortUsersEmailDesc() {
-		return userRepository.findByOrderByEmailDesc();
+	List<GetUsersDTO> sortUsersEmailDesc() {
+		List<GetUsersDTO> users = new ArrayList<>();
+		for (User u : userRepository.findByOrderByEmailDesc()) {
+			GetUsersDTO userDTO = new GetUsersDTO();
+			userDTO.setId(u.getId());
+			userDTO.setEmail(u.getEmail());
+			userDTO.setUsername(u.getUsername());
+			userDTO.setOrdersCount(orderRepository.getOrderCount(u.getId()));
+			users.add(userDTO);
+		}
+		return users;
 	}
 
 

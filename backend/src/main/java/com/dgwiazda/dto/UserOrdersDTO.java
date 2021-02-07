@@ -4,8 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDateTime;
 
-public class OrderDTO {
-
+public class UserOrdersDTO {
     private Long id;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss:SSS", shape = JsonFormat.Shape.STRING)
@@ -16,13 +15,17 @@ public class OrderDTO {
 
     private Float price;
 
-    private String user;
-
-    private Long productId;
+    private String product;
 
     private Long quantity;
 
-    private String productName;
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public LocalDateTime getRentDateFrom() {
         return rentDateFrom;
@@ -48,20 +51,12 @@ public class OrderDTO {
         this.price = price;
     }
 
-    public String getUser() {
-        return user;
+    public String getProduct() {
+        return product;
     }
 
-    public void setUser(String user) {
-        this.user = user;
-    }
-
-    public Long getProductId() {
-        return productId;
-    }
-
-    public void setProductId(Long productId) {
-        this.productId = productId;
+    public void setProduct(String product) {
+        this.product = product;
     }
 
     public Long getQuantity() {
@@ -71,21 +66,4 @@ public class OrderDTO {
     public void setQuantity(Long quantity) {
         this.quantity = quantity;
     }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getProductName() {
-        return productName;
-    }
-
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
 }
-
