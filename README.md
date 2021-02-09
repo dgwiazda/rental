@@ -25,12 +25,13 @@ To run this project:
 
 #### Backend
 * Set in application.properties your SQL Server username and password
-* After that just run the "backend/src/main/java/com.dgwiazda/wypozyczalnia"
-
+* Install Json Package
 ```
 $ cd ../backend
 $ npm install
 ```
+* After that just run the "backend/src/main/java/com.dgwiazda/wypozyczalnia"
+
 #### Frontend
 
 ```
