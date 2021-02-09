@@ -27,8 +27,9 @@ To run this project:
 * After that just run the "backend/src/main/java/com.dgwiazda/wypozyczalnia"
 
 #### Frontend
-open terminal:  
+
 ```
+$ cd ../frontend
 $ npm install
 $ npm start
 ```
