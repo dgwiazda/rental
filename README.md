@@ -15,6 +15,7 @@ In application we can :
 Project is created with:
 * React.js
 * Spring Boot
+* Bootstrap
 	
 ## Setup
 To run this project:  
