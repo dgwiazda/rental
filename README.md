@@ -17,7 +17,7 @@ Project is created with:
 * Spring Boot
 	
 ## Setup
-To run this project, install it locally using npm:
+To run this project:  
 
 ### Database
 * Create database instance in MSSQL named "wypozyczalnia_sportowa"
