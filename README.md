@@ -39,3 +39,14 @@ $ npm start
 #### Home Page
 ![alt text](https://github.com/dgwiazda/rental/blob/master/pictures/homePage.PNG?raw=true)
 
+#### Product Page
+![alt text](https://github.com/dgwiazda/rental/blob/master/pictures/Product.PNG?raw=true)
+
+#### Order Page
+![alt text](https://github.com/dgwiazda/rental/blob/master/pictures/Order.PNG?raw=true)
+
+#### Admin Board Page - table
+![alt text](https://github.com/dgwiazda/rental/blob/master/pictures/AdminBoardTable.PNG?raw=true)
+
+#### Admin Board Page - chart
+![alt text](https://github.com/dgwiazda/rental/blob/master/pictures/AdminBoardChart.PNG?raw=true)
