@@ -19,19 +19,19 @@ Project is created with:
 ## Setup
 To run this project:  
 
-### Database
+#### Database
 * Create database instance in MSSQL named "wypozyczalnia_sportowa"
 
-### Backend
+#### Backend
 * Set in application.properties your SQL Server username and password
 * After that just run the "wypozyczalnia"
 
-### Frontend
+#### Frontend
 open terminal:  
 ```
 $ npm install
 $ npm start
 ```
-#### Now You can use application on http://localhost:8081
+##### Now You can use application on http://localhost:8081
 ## Pictures
 
