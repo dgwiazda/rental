@@ -27,6 +27,10 @@ To run this project:
 * Set in application.properties your SQL Server username and password
 * After that just run the "backend/src/main/java/com.dgwiazda/wypozyczalnia"
 
+```
+$ cd ../backend
+$ npm install
+```
 #### Frontend
 
 ```
