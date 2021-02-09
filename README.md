@@ -36,6 +36,9 @@ $ npm start
 ##### Now You can use application on http://localhost:8081
 ## Pictures
 
+#### Database Relations
+![alt text](https://github.com/dgwiazda/rental/blob/master/pictures/DataBaseRelations.PNG?raw=true)
+
 #### Home Page
 ![alt text](https://github.com/dgwiazda/rental/blob/master/pictures/homePage.PNG?raw=true)
 
