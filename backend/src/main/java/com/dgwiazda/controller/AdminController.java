@@ -7,7 +7,6 @@ import com.dgwiazda.model.Order;
 import com.dgwiazda.model.Product;
 import com.dgwiazda.model.User;
 import com.dgwiazda.payload.response.MessageResponse;
-import com.dgwiazda.repository.CategoryRepository;
 import com.dgwiazda.repository.OrderRepository;
 import com.dgwiazda.repository.ProductRepository;
 import com.dgwiazda.repository.UserRepository;
@@ -51,7 +50,7 @@ public class AdminController {
 				 ) {
 				productId = p.getId();
 			}
-			orderDTO.setProductName(productRepository.findById(o.getProducts().stream().findFirst().get().getId()).get().getDescription());
+			orderDTO.setProductName(productRepository.findById(o.getProducts().stream().findFirst().get().getId()).get().getProductType().name());
 			orderDTO.setProductId(productId - orderDTO.getQuantity() + 1);
 			orders.add(orderDTO);
 		}
@@ -74,7 +73,7 @@ public class AdminController {
 			) {
 				productId = p.getId();
 			}
-			orderDTO.setProductName(productRepository.findById(o.getProducts().stream().findFirst().get().getId()).get().getDescription());
+			orderDTO.setProductName(productRepository.findById(o.getProducts().stream().findFirst().get().getId()).get().getProductType().name());
 			orderDTO.setProductId(productId - orderDTO.getQuantity() + 1);
 			orders.add(orderDTO);
 		}
@@ -97,7 +96,7 @@ public class AdminController {
 			) {
 				productId = p.getId();
 			}
-			orderDTO.setProductName(productRepository.findById(o.getProducts().stream().findFirst().get().getId()).get().getDescription());
+			orderDTO.setProductName(productRepository.findById(o.getProducts().stream().findFirst().get().getId()).get().getProductType().name());
 			orderDTO.setProductId(productId - orderDTO.getQuantity() + 1);
 			orders.add(orderDTO);
 		}
@@ -120,7 +119,7 @@ public class AdminController {
 			) {
 				productId = p.getId();
 			}
-			orderDTO.setProductName(productRepository.findById(o.getProducts().stream().findFirst().get().getId()).get().getDescription());
+			orderDTO.setProductName(productRepository.findById(o.getProducts().stream().findFirst().get().getId()).get().getProductType().name());
 			orderDTO.setProductId(productId - orderDTO.getQuantity() + 1);
 			orders.add(orderDTO);
 		}
@@ -143,7 +142,7 @@ public class AdminController {
 			) {
 				productId = p.getId();
 			}
-			orderDTO.setProductName(productRepository.findById(o.getProducts().stream().findFirst().get().getId()).get().getDescription());
+			orderDTO.setProductName(productRepository.findById(o.getProducts().stream().findFirst().get().getId()).get().getProductType().name());
 			orderDTO.setProductId(productId - orderDTO.getQuantity() + 1);
 			orders.add(orderDTO);
 		}
@@ -166,7 +165,7 @@ public class AdminController {
 			) {
 				productId = p.getId();
 			}
-			orderDTO.setProductName(productRepository.findById(o.getProducts().stream().findFirst().get().getId()).get().getDescription());
+			orderDTO.setProductName(productRepository.findById(o.getProducts().stream().findFirst().get().getId()).get().getProductType().name());
 			orderDTO.setProductId(productId - orderDTO.getQuantity() + 1);
 			orders.add(orderDTO);
 		}
@@ -183,6 +182,7 @@ public class AdminController {
 			productDTO.setId(p.getId());
 			productDTO.setAvailiable(p.isAvailiable());
 			productDTO.setCategory(p.getCategory().getCategory().name());
+			productDTO.setProductType(p.getProductType().name());
 			productDTO.setDescription(p.getDescription());
 			productDTO.setPrice(p.getPrice());
 			products.add(productDTO);
@@ -198,6 +198,7 @@ public class AdminController {
 			productDTO.setId(p.getId());
 			productDTO.setAvailiable(p.isAvailiable());
 			productDTO.setCategory(p.getCategory().getCategory().name());
+			productDTO.setProductType(p.getProductType().name());
 			productDTO.setDescription(p.getDescription());
 			productDTO.setPrice(p.getPrice());
 			products.add(productDTO);
@@ -213,6 +214,7 @@ public class AdminController {
 			productDTO.setId(p.getId());
 			productDTO.setAvailiable(p.isAvailiable());
 			productDTO.setCategory(p.getCategory().getCategory().name());
+			productDTO.setProductType(p.getProductType().name());
 			productDTO.setDescription(p.getDescription());
 			productDTO.setPrice(p.getPrice());
 			products.add(productDTO);
@@ -228,6 +230,7 @@ public class AdminController {
 			productDTO.setId(p.getId());
 			productDTO.setAvailiable(p.isAvailiable());
 			productDTO.setCategory(p.getCategory().getCategory().name());
+			productDTO.setProductType(p.getProductType().name());
 			productDTO.setDescription(p.getDescription());
 			productDTO.setPrice(p.getPrice());
 			products.add(productDTO);
@@ -243,6 +246,7 @@ public class AdminController {
 			productDTO.setId(p.getId());
 			productDTO.setAvailiable(p.isAvailiable());
 			productDTO.setCategory(p.getCategory().getCategory().name());
+			productDTO.setProductType(p.getProductType().name());
 			productDTO.setDescription(p.getDescription());
 			productDTO.setPrice(p.getPrice());
 			products.add(productDTO);

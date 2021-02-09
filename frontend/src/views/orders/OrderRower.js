@@ -10,6 +10,9 @@ import { Container, Button, Row, Col, Form, Alert } from "react-bootstrap";
 import "react-calendar/dist/Calendar.css";
 
 import ProductService from "../../services/product.service";
+import OrderService from "../../services/order.service";
+
+import { clearMessage } from "../../actions/message";
 
 import { messageAddOrder } from "../../actions/order";
 
@@ -66,13 +69,22 @@ const Styles = styled.div`
 function OrderRower() {
   const [access, setAccess] = useState(false);
   const { user: currentUser } = useSelector((state) => state.auth);
-  const [date, setDate] = useState(new Date());
+  const [myDate, setMyDate] = useState(new Date());
   const [itemCount, setItemCount] = useState(1);
   const [daysCount, setDaysCount] = useState(1);
+  const availiableQuantityMax = 2;
+  const [availiableQuantity, setAvailiableQuantity] = useState(
+    availiableQuantityMax
+  );
+  const [btnDisabled, setBtnDisabled] = useState(false);
+  const [busyProducts, setBusyProducts] = useState(0);
+  const [busyProductCount, setBusyProductCount] = useState(0);
   const [itemIdDb, setItemIdDb] = useState(21);
   const [price, setPrice] = useState(0);
   const [success, setSuccess] = useState(false);
   const { message } = useSelector((state) => state.message);
+  const [options, setOptions] = useState([]);
+  const [title, setTitle] = useState(" - kolażówka");
   const dispatch = useDispatch();
   let totalPrice = price * daysCount * itemCount;
 
@@ -80,29 +92,99 @@ function OrderRower() {
     if (currentUser) {
       setAccess(currentUser.roles.includes("ROLE_USER"));
     }
+    ProductService.getItemPrice(itemIdDb).then((response) => {
+      setPrice(response.data);
+    });
+    OrderService.getRowerKolazowkaUnavailiable().then((response) => {
+      var len = response.data.length;
+      setAvailiableQuantity(availiableQuantityMax - len);
+    });
   }, [currentUser]);
+
+  const getUniqueBusyProductCount = () => {
+    if (itemIdDb === 21) {
+      OrderService.getRowerKolazowkaBusy(
+        moment(myDate[0]).format("YYYY-MM-DD HH:mm:ss:SSS"),
+        moment(myDate[1]).format("YYYY-MM-DD HH:mm:ss:SSS")
+      ).then((response) => {
+        setBusyProducts(response.data);
+        setBusyProductCount(response.data.length);
+      });
+    }
+    if (itemIdDb === 23) {
+      OrderService.getRowerGorskiBusy(
+        moment(myDate[0]).format("YYYY-MM-DD HH:mm:ss:SSS"),
+        moment(myDate[1]).format("YYYY-MM-DD HH:mm:ss:SSS")
+      ).then((response) => {
+        setBusyProducts(response.data);
+        setBusyProductCount(response.data.length);
+      });
+    }
+    if (itemIdDb === 25) {
+      OrderService.getRowerMiejskiBusy(
+        moment(myDate[0]).format("YYYY-MM-DD HH:mm:ss:SSS"),
+        moment(myDate[1]).format("YYYY-MM-DD HH:mm:ss:SSS")
+      ).then((response) => {
+        setBusyProducts(response.data);
+        setBusyProductCount(response.data.length);
+      });
+    }
+  };
+
   useEffect(() => {
-    ProductService.getItemPrice(itemIdDb).then(
-      (response) => {
-        setPrice(response.data);
+    getOptions();
+  }, [busyProductCount]);
+
+  const getOptions = () => {
+    var optionsTemp = [];
+    var orderableCount = availiableQuantity - busyProductCount;
+    console.log(orderableCount);
+    if (orderableCount) {
+      setBtnDisabled(false);
+      for (var i = 0; i < orderableCount; i++) {
+        optionsTemp.push(i + 1);
       }
-    );
-  }, [itemIdDb]);
+    } else {
+      setBtnDisabled(true);
+    }
+    setOptions(optionsTemp);
+  };
 
   const onChange = (date) => {
-    setDate(date);
+    setMyDate(date);
     let diffTime = Math.abs(date[1] - date[0]);
     setDaysCount(Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
   };
 
+  useEffect(() => {
+    getUniqueBusyProductCount();
+  }, [myDate]);
+
   const onTypeChange = (e) => {
+    dispatch(clearMessage());
     if (e.target.value === "kolażówka") {
+      setTitle(" - kolażówka");
+      OrderService.getRowerKolazowkaUnavailiable().then((response) => {
+        var len = response.data.length;
+        setAvailiableQuantity(availiableQuantityMax - len);
+      });
       setItemIdDb(21);
     }
     if (e.target.value === "górski") {
+      setTitle(" - górski");
+      OrderService.getRowerGorskiUnavailiable().then((response) => {
+        var len = response.data.length;
+        setAvailiableQuantity(availiableQuantityMax - len);
+      });
       setItemIdDb(23);
+      
     }
     if (e.target.value === "miejski") {
+      setTitle(" - miejski");
+      OrderService.getRowerMiejskiUnavailiable().then((response) => {
+        var len = response.data.length;
+        setAvailiableQuantity(availiableQuantityMax - len);
+      });
       setItemIdDb(25);
     }
   };
@@ -110,16 +192,27 @@ function OrderRower() {
   const sendRequest = () => {
     var data = {
       id: 1,
-      rentDateFrom: moment(date[0]).format("YYYY-MM-DD HH:mm:ss:SSS"),
-      rentDateTo: moment(date[1]).format("YYYY-MM-DD HH:mm:ss:SSS"),
+      rentDateFrom: moment(myDate[0]).format("YYYY-MM-DD HH:mm:ss:SSS"),
+      rentDateTo: moment(myDate[1]).format("YYYY-MM-DD HH:mm:ss:SSS"),
       price: totalPrice,
       userId: currentUser.id,
       productId: itemIdDb,
       quantity: itemCount,
+      disabledProducts: busyProducts,
+      productsCount: availiableQuantityMax,
     };
     dispatch(messageAddOrder(data));
     setSuccess(true);
   };
+
+  useEffect(() => {
+    if (availiableQuantity) {
+      setBtnDisabled(false);
+    } else {
+      setBtnDisabled(true);
+    }
+  }, [availiableQuantity]);
+
   return (
     <div>
       {access ? (
@@ -135,7 +228,19 @@ function OrderRower() {
           ) : (
             <Styles>
               <Container>
-                <h1>Rower</h1>
+                <h1>
+                  Rower{title}{" "}
+                  {availiableQuantity ? (
+                    ""
+                  ) : (
+                    <span>(aktualnie niedostępny)</span>
+                  )}
+                </h1>
+                {btnDisabled && availiableQuantity ? (
+                  <Alert variant="warning">Niedostępny w tym terminie!</Alert>
+                ) : (
+                  ""
+                )}
                 <Row>
                   <Col>
                     <h2>Rodzaj:</h2>
@@ -153,7 +258,7 @@ function OrderRower() {
                   <Col>
                     <Calendar
                       onChange={onChange}
-                      value={date}
+                      value={myDate}
                       minDate={new Date()}
                       selectRange={true}
                       returnValue={"range"}
@@ -166,16 +271,26 @@ function OrderRower() {
                       as="select"
                       onChange={(e) => setItemCount(e.target.value)}
                     >
-                      <option>1</option>
-                      <option>2</option>
+                      {options.map((option, index) => {
+                        return (
+                          <option key={index} value={option}>
+                            {option}
+                          </option>
+                        );
+                      })}
                     </Form.Control>
                   </Col>
                   <Col id="price-col">
                     <h2>Cena za {daysCount} dni:</h2>
-                    <h3>{price * daysCount * itemCount}zł</h3>
+                    <h3>{totalPrice}zł</h3>
                   </Col>
                 </Row>
-                <Button id="submitButton" type="submit" onClick={sendRequest}>
+                <Button
+                  id="submitButton"
+                  type="submit"
+                  onClick={sendRequest}
+                  disabled={btnDisabled ? true : false}
+                >
                   Zarezerwuj
                 </Button>
               </Container>

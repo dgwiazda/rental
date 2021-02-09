@@ -10,6 +10,7 @@ import { Container, Button, Row, Col, Alert } from "react-bootstrap";
 import "react-calendar/dist/Calendar.css";
 
 import ProductService from "../../services/product.service";
+import OrderService from "../../services/order.service";
 
 import { messageAddOrder } from "../../actions/order";
 
@@ -62,47 +63,99 @@ const Styles = styled.div`
 function OrderSzynaCmp() {
   const [access, setAccess] = useState(false);
   const { user: currentUser } = useSelector((state) => state.auth);
-  const [date, setDate] = useState(new Date());
+  const [myDate, setMyDate] = useState(new Date());
+  const [itemCount, setItemCount] = useState(1);
   const [daysCount, setDaysCount] = useState(1);
+  const availiableQuantityMax = 1;
+  const [availiableQuantity, setAvailiableQuantity] = useState(
+    availiableQuantityMax
+  );
+  const [btnDisabled, setBtnDisabled] = useState(false);
+  const [busyProducts, setBusyProducts] = useState(0);
+  const [busyProductCount, setBusyProductCount] = useState(0);
   const itemIdDb = 31;
   const [price, setPrice] = useState(0);
   const [success, setSuccess] = useState(false);
   const { message } = useSelector((state) => state.message);
+  const [options, setOptions] = useState([]);
   const dispatch = useDispatch();
-  let totalPrice = price * daysCount;
+  let totalPrice = price * daysCount * itemCount;
 
   useEffect(() => {
     if (currentUser) {
       setAccess(currentUser.roles.includes("ROLE_USER"));
     }
+    ProductService.getItemPrice(itemIdDb).then((response) => {
+      setPrice(response.data);
+    });
+    OrderService.getSzynaCmpUnavailiable().then((response) => {
+      var len = response.data.length;
+      setAvailiableQuantity(availiableQuantityMax - len);
+    });
   }, [currentUser]);
+
+  const getUniqueBusyProductCount = () => {
+    OrderService.getSzynaCmpBusy(
+      moment(myDate[0]).format("YYYY-MM-DD HH:mm:ss:SSS"),
+      moment(myDate[1]).format("YYYY-MM-DD HH:mm:ss:SSS")
+    ).then((response) => {
+      setBusyProducts(response.data);
+      setBusyProductCount(response.data.length);
+    });
+  };
+
   useEffect(() => {
-    ProductService.getItemPrice(itemIdDb).then(
-      (response) => {
-        setPrice(response.data);
+    getOptions();
+  }, [busyProductCount]);
+
+  const getOptions = () => {
+    var optionsTemp = [];
+    var orderableCount = availiableQuantity - busyProductCount;
+    if (orderableCount) {
+      setBtnDisabled(false);
+      for (var i = 0; i < orderableCount; i++) {
+        optionsTemp.push(i + 1);
       }
-    );
-  }, []);
+    } else {
+      setBtnDisabled(true);
+    }
+    setOptions(optionsTemp);
+  };
 
   const onChange = (date) => {
-    setDate(date);
+    setMyDate(date);
     let diffTime = Math.abs(date[1] - date[0]);
     setDaysCount(Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
   };
 
+  useEffect(() => {
+    getUniqueBusyProductCount();
+  }, [myDate]);
+
   const sendRequest = () => {
     var data = {
       id: 1,
-      rentDateFrom: moment(date[0]).format("YYYY-MM-DD HH:mm:ss:SSS"),
-      rentDateTo: moment(date[1]).format("YYYY-MM-DD HH:mm:ss:SSS"),
+      rentDateFrom: moment(myDate[0]).format("YYYY-MM-DD HH:mm:ss:SSS"),
+      rentDateTo: moment(myDate[1]).format("YYYY-MM-DD HH:mm:ss:SSS"),
       price: totalPrice,
       userId: currentUser.id,
       productId: itemIdDb,
-      quantity: 1,
+      quantity: itemCount,
+      disabledProducts: busyProducts,
+      productsCount: availiableQuantityMax,
     };
     dispatch(messageAddOrder(data));
     setSuccess(true);
   };
+
+  useEffect(() => {
+    if (availiableQuantity) {
+      setBtnDisabled(false);
+    } else {
+      setBtnDisabled(true);
+    }
+  }, [availiableQuantity]);
+
   return (
     <div>
       {access ? (
@@ -118,12 +171,23 @@ function OrderSzynaCmp() {
           ) : (
             <Styles>
               <Container>
-                <h1>Szyna CMP</h1>
+                <h1>Szyna CMP{" "}
+                  {availiableQuantity ? (
+                    ""
+                  ) : (
+                    <span>(aktualnie niedostępny)</span>
+                  )}
+                </h1>
+                {btnDisabled && availiableQuantity ? (
+                  <Alert variant="warning">Niedostępny w tym terminie!</Alert>
+                ) : (
+                  ""
+                )}
                 <Row>
                   <Col>
                     <Calendar
                       onChange={onChange}
-                      value={date}
+                      value={myDate}
                       minDate={new Date()}
                       selectRange={true}
                       returnValue={"range"}
@@ -131,10 +195,15 @@ function OrderSzynaCmp() {
                   </Col>
                   <Col id="price-col">
                     <h2>Cena za {daysCount} dni:</h2>
-                    <h3>{price * daysCount}zł</h3>
+                    <h3>{totalPrice}zł</h3>
                   </Col>
                 </Row>
-                <Button id="submitButton" type="submit" onClick={sendRequest}>
+                <Button
+                  id="submitButton"
+                  type="submit"
+                  onClick={sendRequest}
+                  disabled={btnDisabled ? true : false}
+                >
                   Zarezerwuj
                 </Button>
               </Container>

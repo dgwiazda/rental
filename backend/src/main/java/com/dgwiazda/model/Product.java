@@ -1,5 +1,7 @@
 package com.dgwiazda.model;
 
+import com.dgwiazda.enums.EProductType;
+
 import javax.persistence.*;
 
 @Entity
@@ -12,6 +14,7 @@ public class Product {
 
     private Float price;
     private Boolean availiable;
+    private EProductType productType;
 
     @Column(name = "item_description")
     private String description;
@@ -19,11 +22,13 @@ public class Product {
     @ManyToOne
     private Category category;
 
-    public Product(Long id, Float price, Boolean availiable, String description, Category category) {
+
+    public Product(Long id, Float price, Boolean availiable, String description, EProductType productType, Category category) {
         this.id = id;
         this.price = price;
         this.availiable = availiable;
         this.description = description;
+        this.productType = productType;
         this.category = category;
     }
 
@@ -61,6 +66,14 @@ public class Product {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public EProductType getProductType() {
+        return productType;
+    }
+
+    public void setProductType(EProductType productType) {
+        this.productType = productType;
     }
 
     public Category getCategory() {

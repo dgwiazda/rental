@@ -3,6 +3,7 @@ package com.dgwiazda.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class AddOrderDTO {
 
@@ -21,6 +22,18 @@ public class AddOrderDTO {
     private Long productId;
 
     private Long quantity;
+
+    private Long productsCount;
+
+    public Long getProductsCount() {
+        return productsCount;
+    }
+
+    public void setProductsCount(Long productsCount) {
+        this.productsCount = productsCount;
+    }
+
+    private List<Long> disabledProducts;
 
     public Long getId() {
         return id;
@@ -76,6 +89,14 @@ public class AddOrderDTO {
 
     public void setQuantity(Long quantity) {
         this.quantity = quantity;
+    }
+
+    public List<Long> getDisabledProducts() {
+        return disabledProducts;
+    }
+
+    public void setDisabledProducts(List<Long> disabledProducts) {
+        this.disabledProducts = disabledProducts;
     }
 }
 

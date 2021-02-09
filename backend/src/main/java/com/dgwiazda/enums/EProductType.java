@@ -1,0 +1,22 @@
+package com.dgwiazda.enums;
+
+public enum EProductType {
+    BIEZNIA,
+    HALA,
+    KAJAK,
+    MATA,
+    ORLIK,
+    ROWER_KOLAZOWKA,
+    ROWER_GORSKI,
+    ROWER_MIEJSKI,
+    ROWER_STACJONARNY,
+    SPADOCHRON,
+    STADION,
+    SZYNA_CMP,
+    WOREK_TRENINGOWY,
+    GRUSZKA,
+    ZESTAW_DO_NART,
+    ZESTAW_DO_HOKEJA,
+    ZESTAW_DO_SNOWBOARDU,
+    ZESTAW_DO_WSPINACZKI
+}

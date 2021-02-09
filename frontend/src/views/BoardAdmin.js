@@ -74,8 +74,8 @@ const BoardAdmin = () => {
     getOrders();
   }, [currentUser]);
 
-  const getOrders = () => {
-    AdminService.getOrders().then((response) => {
+  const getOrders = async () => {
+    await AdminService.getOrders().then((response) => {
       setOrders(response.data);
     });
     setShow(1);
@@ -149,9 +149,10 @@ const BoardAdmin = () => {
     });
     setProductsSort(4);
   };
-  async function changeAvailiable(id) {
-    await dispatch(messageChangeAvailiable(id));
-    alert(message);
+  const changeAvailiable = async (id) => {
+    await dispatch(messageChangeAvailiable(id)).then(() => {
+      alert(message);
+    });
     if (productsSort === 0) {
       AdminService.getProducts().then((response) => {
         setProducts(response.data);
@@ -206,8 +207,8 @@ const BoardAdmin = () => {
     });
   };
 
-  async function getMonthly() {
-    await AdminService.getMonthlySales().then((response) => {
+  const getMonthly = () => {
+    AdminService.getMonthlySales().then((response) => {
       response.data.push(0);
       setChartData(response.data);
     });
@@ -228,11 +229,11 @@ const BoardAdmin = () => {
     ]);
   }
 
-  async function getAnnually() {
+  const getAnnually = async () => {
     var l;
     await AdminService.getAnnuallySales().then((response) => {
       setChartData(response.data);
-      l = chartData.length;
+      l = response.data.length;
     });
     setChartLabel("Sprzedaż roczna");
     let years = [];
@@ -339,6 +340,7 @@ const BoardAdmin = () => {
                   <thead>
                     <tr>
                       <th>#</th>
+                      <th>Produkt</th>
                       <th>Kategoria</th>
                       <th>Cena</th>
                       <th>Opis</th>
@@ -349,6 +351,7 @@ const BoardAdmin = () => {
                     {products.map((product) => (
                       <tr key={product.id}>
                         <td>{product.id}</td>
+                        <td>{product.productType}</td>
                         <td>{product.category}</td>
                         <td>{product.price}zł</td>
                         <td>{product.description}</td>

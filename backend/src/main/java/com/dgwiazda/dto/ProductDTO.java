@@ -11,6 +11,7 @@ public class ProductDTO {
     private Boolean availiable;
     private String description;
     private String category;
+    private String productType;
 
     public Long getId() {
         return id;
@@ -50,5 +51,13 @@ public class ProductDTO {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public String getProductType() {
+        return productType;
+    }
+
+    public void setProductType(String productType) {
+        this.productType = productType;
     }
 }

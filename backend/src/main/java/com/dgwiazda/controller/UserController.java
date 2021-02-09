@@ -51,12 +51,12 @@ public class UserController {
     }
 
     @GetMapping("/orders")
-    public List<UserOrdersDTO> getUserOrders(Long userIndex) {
+    public List<UserOrdersDTO> getUserOrders(Long userId) {
         List<UserOrdersDTO> orders = new ArrayList<>();
-        System.out.println(userIndex);
+        System.out.println(userId);
         long i = 1;
-        System.out.println(orderRepository.getUserOrdersbyUserId(userIndex));
-        for (Order o : orderRepository.getUserOrdersbyUserId(userIndex)) {
+        System.out.println(orderRepository.getUserOrdersbyUserId(userId));
+        for (Order o : orderRepository.getUserOrdersbyUserId(userId)) {
             UserOrdersDTO orderDTO = new UserOrdersDTO();
             orderDTO.setId(i);
             orderDTO.setPrice(o.getPrice());

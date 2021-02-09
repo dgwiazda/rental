@@ -21,17 +21,4 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findByOrderByPriceDesc();
     List<Product> findByOrderByIdAsc();
     List<Product> findByOrderByIdDesc();
-
-    @Query(value = "select id from (select id, availiable from products where id=1 or id=2) as tab where tab.availiable=0" , nativeQuery = true)
-    List<Long> getUnavailiableBiezniaId();
-
-    @Query(value = "select product_id from (select * from (select * from orders as o inner join order_products as op on op.order_id=o.id) as tab where tab.product_id = 1 or tab.product_id = 2) as tab1 where (tab1.rent_date_to >= :rentDateFrom and tab1.rent_date_to <= :rentDateTo)", nativeQuery = true)
-    List<Long> getBiezniaIdToDisableRight(@Param("rentDateFrom") String rentDateFrom, @Param("rentDateTo") String rentDateTo);
-
-    @Query(value = "select product_id from (select * from (select * from orders as o inner join order_products as op on op.order_id=o.id) as tab where tab.product_id = 1 or tab.product_id = 2) as tab1 where (tab1.rent_date_from >= :rentDateFrom and tab1.rent_date_from <= :rentDateTo)", nativeQuery = true)
-    List<Long> getBiezniaIdToDisableLeft(@Param("rentDateFrom") String rentDateFrom, @Param("rentDateTo") String rentDateTo);
-
-    @Query(value = "select product_id from (select * from (select * from orders as o inner join order_products as op on op.order_id=o.id) as tab where tab.product_id = 1 or tab.product_id = 2) as tab1 where (tab1.rent_date_from <= :rentDateFrom and tab1.rent_date_from <= :rentDateTo and tab1.rent_date_to >= :rentDateFrom and tab1.rent_date_to >= :rentDateTo)", nativeQuery = true)
-    List<Long> getBiezniaIdToDisableInside(@Param("rentDateFrom") String rentDateFrom, @Param("rentDateTo") String rentDateTo);
-
 }

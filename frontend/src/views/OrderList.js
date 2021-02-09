@@ -46,14 +46,14 @@ const Styles = styled.div`
 function OrderList() {
   const [access, setAccess] = useState(false);
   const { user: currentUser } = useSelector((state) => state.auth);
-  const { message } = useSelector((state) => state.message);
   const [orders, setOrders] = useState([]);
-  const dispatch = useDispatch();
 
   useEffect(() => {
     if (currentUser) {
       setAccess(currentUser.roles.includes("ROLE_USER"));
-      console.log(UserService.getUserOrders(currentUser.id));
+      UserService.getUserOrders(currentUser.id).then((response) => {
+        setOrders(response.data);
+      });
     }
   }, [currentUser]);
 
