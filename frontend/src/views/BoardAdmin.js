@@ -16,6 +16,7 @@ import {
   NavDropdown,
   ButtonGroup,
 } from "react-bootstrap";
+import { setMessage } from "../actions/message";
 
 const Styles = styled.div`
   .container {
@@ -151,7 +152,7 @@ const BoardAdmin = () => {
   };
   const changeAvailiable = async (id) => {
     await dispatch(messageChangeAvailiable(id)).then(() => {
-      alert(message);
+      alert("Status dostępności zmieniony!");
     });
     if (productsSort === 0) {
       AdminService.getProducts().then((response) => {

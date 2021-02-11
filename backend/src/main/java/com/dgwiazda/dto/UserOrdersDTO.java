@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 
 public class UserOrdersDTO {
     private Long id;
+    private Long userOrderId;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss:SSS", shape = JsonFormat.Shape.STRING)
     private LocalDateTime rentDateFrom;
@@ -18,6 +19,14 @@ public class UserOrdersDTO {
     private String product;
 
     private Long quantity;
+
+    public Long getUserOrderId() {
+        return userOrderId;
+    }
+
+    public void setUserOrderId(Long userOrderId) {
+        this.userOrderId = userOrderId;
+    }
 
     public Long getId() {
         return id;

@@ -142,6 +142,7 @@ function OrderMata() {
       productId: itemIdDb,
       quantity: itemCount,
       disabledProducts: busyProducts,
+      productsCount: availiableQuantityMax,
     };
     dispatch(messageAddOrder(data));
     setSuccess(true);

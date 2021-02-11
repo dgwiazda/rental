@@ -29,6 +29,7 @@ public class Order {
     private Float price;
 
     @ManyToOne
+    @JoinColumn(name="user_id", nullable=false)
     private User userId;
 
     @ManyToMany

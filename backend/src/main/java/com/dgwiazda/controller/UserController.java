@@ -1,36 +1,31 @@
 package com.dgwiazda.controller;
 
 import com.dgwiazda.dto.UserOrdersDTO;
-import com.dgwiazda.enums.ERole;
 import com.dgwiazda.model.Order;
-import com.dgwiazda.model.Role;
 import com.dgwiazda.model.User;
-import com.dgwiazda.payload.response.JwtResponse;
 import com.dgwiazda.payload.response.MessageResponse;
 import com.dgwiazda.repository.OrderRepository;
 import com.dgwiazda.repository.ProductRepository;
 import com.dgwiazda.repository.UserRepository;
 import com.dgwiazda.security.jwt.JwtUtils;
-import com.dgwiazda.security.services.UserDetailsImpl;
-import org.aspectj.bridge.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/user")
 @CrossOrigin(origins = "*", maxAge = 3600)
-public class UserController {
+public class UserController{
+
+    Comparator<UserOrdersDTO> compareByProduct = (UserOrdersDTO o1, UserOrdersDTO o2) ->
+            o1.getProduct().compareTo(o2.getProduct());
 
     OrderRepository orderRepository;
     ProductRepository productRepository;
@@ -53,21 +48,115 @@ public class UserController {
     @GetMapping("/orders")
     public List<UserOrdersDTO> getUserOrders(Long userId) {
         List<UserOrdersDTO> orders = new ArrayList<>();
-        System.out.println(userId);
         long i = 1;
-        System.out.println(orderRepository.getUserOrdersbyUserId(userId));
         for (Order o : orderRepository.getUserOrdersbyUserId(userId)) {
             UserOrdersDTO orderDTO = new UserOrdersDTO();
-            orderDTO.setId(i);
+            orderDTO.setUserOrderId(i);
+            orderDTO.setId(o.getId());
             orderDTO.setPrice(o.getPrice());
-            orderDTO.setProduct(productRepository.findById(orderRepository.getProducIdByOrderId(o.getId())).get().getDescription());
+            orderDTO.setProduct(productRepository.findById(orderRepository.getProducIdByOrderId(o.getId())).get().getProductType().name());
             orderDTO.setQuantity(orderRepository.getQuantityBy(o.getId()));
             orderDTO.setRentDateFrom(o.getRentDateFrom());
-            orderDTO.setRentDateTo(o.getRentDateFrom());
+            orderDTO.setRentDateTo(o.getRentDateTo());
             orders.add(orderDTO);
             i++;
         }
-        System.out.println(orders);
+        return orders;
+    }
+
+    @GetMapping("/orders/sort-closest")
+    public List<UserOrdersDTO> sortUserOrdersByDateFromAsc(Long userId) {
+        List<UserOrdersDTO> orders = new ArrayList<>();
+        long i = 1;
+        for (Order o : orderRepository.sortUserOrdersbyRentDateFromAsc(userId)) {
+            UserOrdersDTO orderDTO = new UserOrdersDTO();
+            orderDTO.setUserOrderId(i);
+            orderDTO.setId(o.getId());
+            orderDTO.setPrice(o.getPrice());
+            orderDTO.setProduct(productRepository.findById(orderRepository.getProducIdByOrderId(o.getId())).get().getProductType().name());
+            orderDTO.setQuantity(orderRepository.getQuantityBy(o.getId()));
+            orderDTO.setRentDateFrom(o.getRentDateFrom());
+            orderDTO.setRentDateTo(o.getRentDateTo());
+            orders.add(orderDTO);
+            i++;
+        }
+        return orders;
+    }
+
+    @GetMapping("/orders/sort-farest")
+    public List<UserOrdersDTO> sortUserOrdersByDateFromDesc(Long userId) {
+        List<UserOrdersDTO> orders = new ArrayList<>();
+        long i = 1;
+        for (Order o : orderRepository.sortUserOrdersbyRentDateFromDesc(userId)) {
+            UserOrdersDTO orderDTO = new UserOrdersDTO();
+            orderDTO.setUserOrderId(i);
+            orderDTO.setId(o.getId());
+            orderDTO.setPrice(o.getPrice());
+            orderDTO.setProduct(productRepository.findById(orderRepository.getProducIdByOrderId(o.getId())).get().getProductType().name());
+            orderDTO.setQuantity(orderRepository.getQuantityBy(o.getId()));
+            orderDTO.setRentDateFrom(o.getRentDateFrom());
+            orderDTO.setRentDateTo(o.getRentDateTo());
+            orders.add(orderDTO);
+            i++;
+        }
+        return orders;
+    }
+
+    @GetMapping("/orders/sort-cheapest")
+    public List<UserOrdersDTO> sortUserOrdersByPriceAsc(Long userId) {
+        List<UserOrdersDTO> orders = new ArrayList<>();
+        long i = 1;
+        for (Order o : orderRepository.sortUserOrdersbyPriceAsc(userId)) {
+            UserOrdersDTO orderDTO = new UserOrdersDTO();
+            orderDTO.setUserOrderId(i);
+            orderDTO.setId(o.getId());
+            orderDTO.setPrice(o.getPrice());
+            orderDTO.setProduct(productRepository.findById(orderRepository.getProducIdByOrderId(o.getId())).get().getProductType().name());
+            orderDTO.setQuantity(orderRepository.getQuantityBy(o.getId()));
+            orderDTO.setRentDateFrom(o.getRentDateFrom());
+            orderDTO.setRentDateTo(o.getRentDateTo());
+            orders.add(orderDTO);
+            i++;
+        }
+        return orders;
+    }
+
+    @GetMapping("/orders/sort-expensive")
+    public List<UserOrdersDTO> sortUserOrdersByPriceDesc(Long userId) {
+        List<UserOrdersDTO> orders = new ArrayList<>();
+        long i = 1;
+        for (Order o : orderRepository.sortUserOrdersbyPriceDesc(userId)) {
+            UserOrdersDTO orderDTO = new UserOrdersDTO();
+            orderDTO.setUserOrderId(i);
+            orderDTO.setId(o.getId());
+            orderDTO.setPrice(o.getPrice());
+            orderDTO.setProduct(productRepository.findById(orderRepository.getProducIdByOrderId(o.getId())).get().getProductType().name());
+            orderDTO.setQuantity(orderRepository.getQuantityBy(o.getId()));
+            orderDTO.setRentDateFrom(o.getRentDateFrom());
+            orderDTO.setRentDateTo(o.getRentDateTo());
+            orders.add(orderDTO);
+            i++;
+        }
+        return orders;
+    }
+
+    @GetMapping("/orders/sort-product")
+    public List<UserOrdersDTO> sortUserOrdersByProductAsc(Long userId) {
+        List<UserOrdersDTO> orders = new ArrayList<>();
+        long i = 1;
+        for (Order o : orderRepository.getUserOrdersbyUserId(userId)) {
+            UserOrdersDTO orderDTO = new UserOrdersDTO();
+            orderDTO.setUserOrderId(i);
+            orderDTO.setId(o.getId());
+            orderDTO.setPrice(o.getPrice());
+            orderDTO.setProduct(productRepository.findById(orderRepository.getProducIdByOrderId(o.getId())).get().getProductType().name());
+            orderDTO.setQuantity(orderRepository.getQuantityBy(o.getId()));
+            orderDTO.setRentDateFrom(o.getRentDateFrom());
+            orderDTO.setRentDateTo(o.getRentDateTo());
+            orders.add(orderDTO);
+            i++;
+        }
+        Collections.sort(orders, compareByProduct);
         return orders;
     }
 

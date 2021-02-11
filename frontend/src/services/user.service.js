@@ -10,6 +10,37 @@ class UserService {
       headers: authHeader(),
     });
   }
+  sortUserOrdersByRentDateFromAsc(userId) {
+    return axios.get(API_URL + "orders/sort-closest?userId=" + userId, {
+      headers: authHeader(),
+    });
+  }
+  sortUserOrdersByRentDateFromDesc(userId) {
+    return axios.get(API_URL + "orders/sort-farest?userId=" + userId, {
+      headers: authHeader(),
+    });
+  }
+  sortUserOrdersByPriceAsc(userId) {
+    return axios.get(API_URL + "orders/sort-cheapest?userId=" + userId, {
+      headers: authHeader(),
+    });
+  }
+  sortUserOrdersByPriceDesc(userId) {
+    return axios.get(API_URL + "orders/sort-expensive?userId=" + userId, {
+      headers: authHeader(),
+    });
+  }
+  sortUserOrdersByProductAsc(userId) {
+    return axios.get(API_URL + "orders/sort-product?userId=" + userId, {
+      headers: authHeader(),
+    });
+  }
+
+  deleteOrder(orderId) {
+    return axios.delete(API_URL + "orders/cancel?index=" + orderId, {
+      headers: authHeader(),
+    });
+  }
 
   changePassword(userId, oldPassword, newPassword) {
     return axios.put(

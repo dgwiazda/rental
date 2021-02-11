@@ -5,6 +5,7 @@ import {
     CHANGE_PASSWORD_SUCCESS,
     CHANGE_USERNAME_FAIL,
     CHANGE_USERNAME_SUCCESS,
+    DELETE_ORDER,
     SET_MESSAGE,
 } from "./types";
 
@@ -111,6 +112,22 @@ export const changePassword = (userId, oldPassword, newPassword) => (dispatch) =
             });
 
             return Promise.reject();
+        }
+    );
+};
+
+export const messageDeleteOrder = (orderId) => (dispatch) => {
+    return UserService.deleteOrder(orderId).then(
+        (response) => {
+            dispatch({
+                type: DELETE_ORDER,
+            });
+
+            dispatch({
+                type: SET_MESSAGE,
+                payload: response.data.message,
+            });
+            return Promise.resolve();
         }
     );
 };

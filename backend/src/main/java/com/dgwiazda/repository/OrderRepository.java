@@ -27,17 +27,35 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     @Query(value = "SELECT SUM(price) from orders group by YEAR(rent_date_from)", nativeQuery = true)
     List<Float> getAnnuallySale();
 
-    @Query(value = "select COUNT(*) from orders where user_id_id= :userIndex", nativeQuery = true)
+
+
+    @Query(value = "select COUNT(*) from orders where user_id= :userIndex", nativeQuery = true)
     Long getOrderCount(@Param("userIndex") Long itemIndex);
 
-    @Query(value = "select * from orders where user_id_id= :userIndex", nativeQuery = true)
-    List<Order> getUserOrdersbyUserId(@Param("userIndex") Long userIndex);
-
-    @Query(value = "select TOP(1)product_id from order_products where user_id_id= :orderIndex", nativeQuery = true)
+    @Query(value = "select TOP(1)product_id from order_products where order_id= :orderIndex", nativeQuery = true)
     Long getProducIdByOrderId(@Param("orderIndex") Long orderIndex);
 
-    @Query(value = "select COUNT(*) from order_products where user_id_id= :orderIndex", nativeQuery = true)
+    @Query(value = "select COUNT(*) from order_products where order_id= :orderIndex", nativeQuery = true)
     Long getQuantityBy(@Param("orderIndex") Long orderIndex);
+
+    @Query(value = "select * from orders where user_id= :userIndex", nativeQuery = true)
+    List<Order> getUserOrdersbyUserId(@Param("userIndex") Long userIndex);
+
+    @Query(value = "select * from orders where user_id= :userIndex and rent_date_from>GETDATE() order by rent_date_from", nativeQuery = true)
+    List<Order> sortUserOrdersbyRentDateFromAsc(@Param("userIndex") Long userIndex);
+
+    @Query(value = "select * from orders where user_id= :userIndex order by rent_date_from desc", nativeQuery = true)
+    List<Order> sortUserOrdersbyRentDateFromDesc(@Param("userIndex") Long userIndex);
+
+    @Query(value = "select * from orders where user_id= :userIndex order by price", nativeQuery = true)
+    List<Order> sortUserOrdersbyPriceAsc(@Param("userIndex") Long userIndex);
+
+    @Query(value = "select * from orders where user_id= :userIndex order by price desc", nativeQuery = true)
+    List<Order> sortUserOrdersbyPriceDesc(@Param("userIndex") Long userIndex);
+
+    @Query(value = "select * from orders where user_id= :userIndex order by price", nativeQuery = true)
+    List<Order> sortUserOrdersbyProductAsc(@Param("userIndex") Long userIndex);
+
 
 
     @Query(value = "select id from (select id, availiable from products where id=1 or id=2) as tab where tab.availiable=0" , nativeQuery = true)
