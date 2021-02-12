@@ -61,6 +61,9 @@ const Styles = styled.div`
       width: 300px;
     }
   }
+  .select-disabled {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
 `;
 
 function OrderOrlik() {

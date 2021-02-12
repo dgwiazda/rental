@@ -64,6 +64,9 @@ const Styles = styled.div`
       width: 300px;
     }
   }
+  .select-disabled {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
 `;
 
 function OrderWorekTreningowy() {
@@ -87,6 +90,7 @@ function OrderWorekTreningowy() {
   const [title, setTitle] = useState(" - worek");
   const dispatch = useDispatch();
   let totalPrice = price * daysCount * itemCount;
+  const availiableOptions = [1, 2];
 
   useEffect(() => {
     if (currentUser) {
@@ -260,9 +264,17 @@ function OrderWorekTreningowy() {
                       as="select"
                       onChange={(e) => setItemCount(e.target.value)}
                     >
-                      {options.map((option, index) => {
+                      {availiableOptions.map((option, index) => {
                         return (
-                          <option key={index} value={option}>
+                          <option
+                            disabled={!options.includes(option)}
+                            key={index}
+                            className={
+                              options.includes(option)
+                                ? ""
+                                : "select-disabled disabled"
+                            }
+                          >
                             {option}
                           </option>
                         );

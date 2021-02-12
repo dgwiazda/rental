@@ -58,6 +58,9 @@ const Styles = styled.div`
       width: 300px;
     }
   }
+  .select-disabled {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
 `;
 
 function OrderMata() {
@@ -80,6 +83,7 @@ function OrderMata() {
   const [options, setOptions] = useState([]);
   const dispatch = useDispatch();
   let totalPrice = price * daysCount * itemCount;
+  const availiableOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
   useEffect(() => {
     if (currentUser) {
@@ -201,9 +205,17 @@ function OrderMata() {
                       as="select"
                       onChange={(e) => setItemCount(e.target.value)}
                     >
-                      {options.map((option, index) => {
+                      {availiableOptions.map((option, index) => {
                         return (
-                          <option key={index} value={option}>
+                          <option
+                            disabled={!options.includes(option)}
+                            key={index}
+                            className={
+                              options.includes(option)
+                                ? ""
+                                : "select-disabled disabled"
+                            }
+                          >
                             {option}
                           </option>
                         );

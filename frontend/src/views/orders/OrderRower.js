@@ -64,6 +64,9 @@ const Styles = styled.div`
       width: 300px;
     }
   }
+  .select-disabled {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
 `;
 
 function OrderRower() {
@@ -87,6 +90,7 @@ function OrderRower() {
   const [title, setTitle] = useState(" - kolażówka");
   const dispatch = useDispatch();
   let totalPrice = price * daysCount * itemCount;
+  const availiableOptions = [1, 2];
 
   useEffect(() => {
     if (currentUser) {
@@ -136,18 +140,18 @@ function OrderRower() {
   }, [busyProductCount]);
 
   const getOptions = () => {
-    var optionsTemp = [];
+    var arr = [];
     var orderableCount = availiableQuantity - busyProductCount;
     console.log(orderableCount);
     if (orderableCount) {
       setBtnDisabled(false);
       for (var i = 0; i < orderableCount; i++) {
-        optionsTemp.push(i + 1);
+        arr.push(i + 1);
       }
     } else {
       setBtnDisabled(true);
     }
-    setOptions(optionsTemp);
+    setOptions(arr);
   };
 
   const onChange = (date) => {
@@ -177,7 +181,6 @@ function OrderRower() {
         setAvailiableQuantity(availiableQuantityMax - len);
       });
       setItemIdDb(23);
-      
     }
     if (e.target.value === "miejski") {
       setTitle(" - miejski");
@@ -271,9 +274,13 @@ function OrderRower() {
                       as="select"
                       onChange={(e) => setItemCount(e.target.value)}
                     >
-                      {options.map((option, index) => {
+                      {availiableOptions.map((option, index) => {
                         return (
-                          <option key={index} value={option}>
+                          <option disabled={!options.includes(option)} 
+                            key={index}
+                            className={
+                              options.includes(option) ? "" : "select-disabled disabled"
+                            }>
                             {option}
                           </option>
                         );

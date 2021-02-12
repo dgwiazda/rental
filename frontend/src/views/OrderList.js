@@ -103,7 +103,7 @@ function OrderList() {
 
   const deleteOrder = async (id) => {
     await dispatch(messageDeleteOrder(id)).then(() => {
-      alert("Rezerwacja odwołana!");
+      alert(message);
     });
     if (productsSort === 0) {
       UserService.getUserOrders(currentUser.id).then((response) => {

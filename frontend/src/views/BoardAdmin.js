@@ -152,7 +152,7 @@ const BoardAdmin = () => {
   };
   const changeAvailiable = async (id) => {
     await dispatch(messageChangeAvailiable(id)).then(() => {
-      alert("Status dostępności zmieniony!");
+      alert(message);
     });
     if (productsSort === 0) {
       AdminService.getProducts().then((response) => {

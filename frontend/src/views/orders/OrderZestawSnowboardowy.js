@@ -58,6 +58,9 @@ const Styles = styled.div`
       width: 300px;
     }
   }
+  .select-disabled {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
 `;
 
 function OrderZestawSnowboardowy() {
@@ -80,6 +83,7 @@ function OrderZestawSnowboardowy() {
   const [options, setOptions] = useState([]);
   const dispatch = useDispatch();
   let totalPrice = price * daysCount * itemCount;
+  const availiableOptions = [1, 2, 3];
 
   useEffect(() => {
     if (currentUser) {
@@ -171,7 +175,8 @@ function OrderZestawSnowboardowy() {
           ) : (
             <Styles>
               <Container>
-                <h1>Zestaw snowboardowy{" "}
+                <h1>
+                  Zestaw snowboardowy{" "}
                   {availiableQuantity ? (
                     ""
                   ) : (
@@ -200,9 +205,17 @@ function OrderZestawSnowboardowy() {
                       as="select"
                       onChange={(e) => setItemCount(e.target.value)}
                     >
-                      {options.map((option, index) => {
+                      {availiableOptions.map((option, index) => {
                         return (
-                          <option key={index} value={option}>
+                          <option
+                            disabled={!options.includes(option)}
+                            key={index}
+                            className={
+                              options.includes(option)
+                                ? ""
+                                : "select-disabled disabled"
+                            }
+                          >
                             {option}
                           </option>
                         );
