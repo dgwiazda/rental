@@ -10,6 +10,16 @@ class OrderService {
       API_URL + "add", data, { headers: authHeader() }
     );
   }
+  getBoiskoAvailiable(productId) {
+    return axios.get(
+      API_URL + "boisko/unavailiable?productId=" + productId,  { headers: authHeader() }
+    );
+  }
+  getBoiskoHoursDiasble(productId, rentDateFrom) {
+    return axios.get(
+      API_URL + "boisko/hours-to-disable?productId=" + productId + "&rentDateFrom=" + rentDateFrom,  { headers: authHeader() }
+    );
+  }
   getBiezniaBusy(rentDateFrom, rentDateTo) {
     return axios.get(
       API_URL + "bieznia/options-to-disable?rentDateFrom=" + rentDateFrom + "&rentDateTo=" + rentDateTo, { headers: authHeader() }

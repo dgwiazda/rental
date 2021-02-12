@@ -59,6 +59,18 @@ public class OrderController {
         return ResponseEntity.ok(new MessageResponse("Rezerwacja dokonana."));
     }
 
+
+
+
+    @GetMapping("/boisko/unavailiable")
+    public Boolean getBoiskoAvailiableById(@RequestParam Long productId) {
+        return orderRepository.getAvailiableBoiskoIdById(productId);
+    }
+    @GetMapping("/boisko/hours-to-disable")
+    public List<Long> getHoursToDisable(@RequestParam Long productId, @RequestParam String rentDateFrom) {
+        System.out.println(orderRepository.getBoiskoDisableHours(productId, rentDateFrom));
+        return orderRepository.getBoiskoDisableHours(productId, rentDateFrom);
+    }
     @GetMapping("/bieznia/unavailiable")
     public List<Long> getBiezniaIdUnavailiable() {
         List<Long> products = new ArrayList<>();

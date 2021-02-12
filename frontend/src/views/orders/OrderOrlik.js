@@ -10,6 +10,7 @@ import { Container, Button, Row, Col, Form, Alert } from "react-bootstrap";
 import "react-calendar/dist/Calendar.css";
 
 import ProductService from "../../services/product.service";
+import OrderService from "../../services/order.service";
 
 import { messageAddOrder } from "../../actions/order";
 
@@ -69,34 +70,123 @@ const Styles = styled.div`
 function OrderOrlik() {
   const [access, setAccess] = useState(false);
   const { user: currentUser } = useSelector((state) => state.auth);
-  const [date, setDate] = useState(new Date());
+  const [myDate, setMyDate] = useState(new Date());
   const [time, setTime] = useState("8:00");
+  const availiableQuantityMax = 1;
+  const [availiableQuantity, setAvailiableQuantity] = useState(
+    availiableQuantityMax
+  );
+  const [btnDisabled, setBtnDisabled] = useState(false);
+  const [busyProducts, setBusyProducts] = useState([]);
+  const [busyProductCount, setBusyProductCount] = useState(0);
   const [itemIdDb, setItemIdDb] = useState(18);
   const [price, setPrice] = useState(0);
   const [success, setSuccess] = useState(false);
   const { message } = useSelector((state) => state.message);
+  const [title, setTitle] = useState(" - ul. Warszawska 36");
   const dispatch = useDispatch();
   let totalPrice = price;
+  const [disabledOptions, setDisabledOptions] = useState([
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+  ]);
 
   useEffect(() => {
     if (currentUser) {
       setAccess(currentUser.roles.includes("ROLE_USER"));
     }
   }, [currentUser]);
+
   useEffect(() => {
     ProductService.getItemPrice(itemIdDb).then((response) => {
       setPrice(response.data);
     });
+    OrderService.getBoiskoAvailiable(itemIdDb).then((response) => {
+      response.data ? setAvailiableQuantity(1) : setAvailiableQuantity(0);
+    });
   }, [itemIdDb]);
+
+  useEffect(() => {
+    if (availiableQuantity) {
+      setBtnDisabled(false);
+    } else {
+      setBtnDisabled(true);
+    }
+  }, [availiableQuantity]);
+
+  useEffect(() => {
+    var date = myDate.toString().slice(0, 16);
+    OrderService.getBoiskoHoursDiasble(
+      itemIdDb,
+      moment(date).format("YYYY-MM-DD")
+    ).then((response) => {
+      setBusyProducts(response.data);
+    });
+  }, [myDate]);
+
+  useEffect(() => {
+    var arr = [];
+    setBusyProductCount(busyProducts.length);
+    if (busyProducts.includes(8)) {
+      arr.push(true);
+    } else {
+      arr.push(false);
+    }
+    if (busyProducts.includes(10)) {
+      arr.push(true);
+    } else {
+      arr.push(false);
+    }
+    if (busyProducts.includes(12)) {
+      arr.push(true);
+    } else {
+      arr.push(false);
+    }
+    if (busyProducts.includes(14)) {
+      arr.push(true);
+    } else {
+      arr.push(false);
+    }
+    if (busyProducts.includes(16)) {
+      arr.push(true);
+    } else {
+      arr.push(false);
+    }
+    if (busyProducts.includes(18)) {
+      arr.push(true);
+    } else {
+      arr.push(false);
+    }
+    if (busyProducts.includes(20)) {
+      arr.push(true);
+    } else {
+      arr.push(false);
+    }
+    setDisabledOptions(arr);
+  }, [busyProducts]);
+
+  useEffect(() => {
+    busyProductCount === disabledOptions.length
+      ? setBtnDisabled(true)
+      : setBtnDisabled(false);
+  }, [busyProductCount]);
 
   const onTypeChange = (e) => {
     if (e.target.value === "ul. Warszawska 36") {
+      setTitle(" - ul. Warszawska 36");
       setItemIdDb(18);
     }
     if (e.target.value === "ul. 3-maja 14") {
+      setTitle(" - ul. 3-maja 14");
       setItemIdDb(19);
     }
     if (e.target.value === "ul. Żwirki i Wigury 3") {
+      setTitle(" - ul. Żwirki i Wigury 3");
       setItemIdDb(20);
     }
   };
@@ -126,12 +216,15 @@ function OrderOrlik() {
     }
     var date0, date1;
     date0 =
-      date.toString().slice(0, 16) +
+      myDate.toString().slice(0, 16) +
       time +
       ":00" +
-      date.toString().slice(24, -1);
+      myDate.toString().slice(24, -1);
     date1 =
-      date.toString().slice(0, 16) + t + ":00" + date.toString().slice(24, -1);
+      myDate.toString().slice(0, 16) +
+      t +
+      ":00" +
+      myDate.toString().slice(24, -1);
     var data = {
       id: 1,
       rentDateFrom: moment(date0).format("YYYY-MM-DD HH:mm:ss:SSS"),
@@ -140,6 +233,8 @@ function OrderOrlik() {
       userId: currentUser.id,
       productId: itemIdDb,
       quantity: 1,
+      disabledProducts: busyProducts,
+      productsCount: availiableQuantityMax,
     };
     dispatch(messageAddOrder(data));
     setSuccess(true);
@@ -159,7 +254,19 @@ function OrderOrlik() {
           ) : (
             <Styles>
               <Container>
-                <h1>Orlik</h1>
+                <h1>
+                  Orlik{title}{" "}
+                  {availiableQuantity ? (
+                    ""
+                  ) : (
+                    <span>(aktualnie niedostępny)</span>
+                  )}
+                </h1>
+                {btnDisabled && availiableQuantity ? (
+                  <Alert variant="warning">Niedostępny w tym terminie!</Alert>
+                ) : (
+                  ""
+                )}
                 <Row>
                   <Col>
                     <h2>Ulica:</h2>
@@ -176,8 +283,10 @@ function OrderOrlik() {
                   </Col>
                   <Col>
                     <Calendar
-                      onChange={(e) => setDate(e)}
-                      value={date}
+                      onChange={(date) => {
+                        setMyDate(date);
+                      }}
+                      value={myDate}
                       minDate={new Date()}
                     />
                   </Col>
@@ -188,21 +297,60 @@ function OrderOrlik() {
                       as="select"
                       onChange={(e) => setTime(e.target.value)}
                     >
-                      <option>8:00</option>
-                      <option>10:00</option>
-                      <option>12:00</option>
-                      <option>14:00</option>
-                      <option>16:00</option>
-                      <option>18:00</option>
-                      <option>20:00</option>
+                      <option
+                        disabled={disabledOptions[0]}
+                        className={disabledOptions[0] ? "select-disabled" : ""}
+                      >
+                        8:00
+                      </option>
+                      <option
+                        disabled={disabledOptions[1]}
+                        className={disabledOptions[1] ? "select-disabled" : ""}
+                      >
+                        10:00
+                      </option>
+                      <option
+                        disabled={disabledOptions[2]}
+                        className={disabledOptions[2] ? "select-disabled" : ""}
+                      >
+                        12:00
+                      </option>
+                      <option
+                        disabled={disabledOptions[3]}
+                        className={disabledOptions[3] ? "select-disabled" : ""}
+                      >
+                        14:00
+                      </option>
+                      <option
+                        disabled={disabledOptions[4]}
+                        className={disabledOptions[4] ? "select-disabled" : ""}
+                      >
+                        16:00
+                      </option>
+                      <option
+                        disabled={disabledOptions[5]}
+                        className={disabledOptions[5] ? "select-disabled" : ""}
+                      >
+                        18:00
+                      </option>
+                      <option
+                        disabled={disabledOptions[6]}
+                        className={disabledOptions[6] ? "select-disabled" : ""}
+                      >
+                        20:00
+                      </option>
                     </Form.Control>
                   </Col>
                   <Col id="price-col">
                     <h2>Cena za 2 godziny:</h2>
-                    <h3>{price}zł</h3>
+                    <h3>{totalPrice}zł</h3>
                   </Col>
                 </Row>
-                <Button id="submitButton" type="submit" onClick={sendRequest}>
+                <Button
+                  id="submitButton"
+                  onClick={sendRequest}
+                  disabled={btnDisabled ? true : false}
+                >
                   Zarezerwuj
                 </Button>
               </Container>

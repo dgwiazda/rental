@@ -98,6 +98,22 @@ function OrderBieznia() {
     });
   }, [currentUser]);
 
+  useEffect(() => {
+    getOptions();
+  }, [busyProductCount]);
+
+  useEffect(() => {
+    getUniqueBusyProductCount();
+  }, [myDate]);
+
+  useEffect(() => {
+    if (availiableQuantity) {
+      setBtnDisabled(false);
+    } else {
+      setBtnDisabled(true);
+    }
+  }, [availiableQuantity]);
+  
   const getUniqueBusyProductCount = () => {
     OrderService.getBiezniaBusy(
       moment(myDate[0]).format("YYYY-MM-DD HH:mm:ss:SSS"),
@@ -107,10 +123,6 @@ function OrderBieznia() {
       setBusyProductCount(response.data.length);
     });
   };
-
-  useEffect(() => {
-    getOptions();
-  }, [busyProductCount]);
 
   const getOptions = () => {
     var optionsTemp = [];
@@ -131,10 +143,6 @@ function OrderBieznia() {
     setDaysCount(Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
   };
 
-  useEffect(() => {
-    getUniqueBusyProductCount();
-  }, [myDate]);
-
   const sendRequest = () => {
     var data = {
       id: 1,
@@ -150,14 +158,6 @@ function OrderBieznia() {
     dispatch(messageAddOrder(data));
     setSuccess(true);
   };
-
-  useEffect(() => {
-    if (availiableQuantity) {
-      setBtnDisabled(false);
-    } else {
-      setBtnDisabled(true);
-    }
-  }, [availiableQuantity]);
 
   return (
     <div>

@@ -53,10 +53,14 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     @Query(value = "select * from orders where user_id= :userIndex order by price desc", nativeQuery = true)
     List<Order> sortUserOrdersbyPriceDesc(@Param("userIndex") Long userIndex);
 
-    @Query(value = "select * from orders where user_id= :userIndex order by price", nativeQuery = true)
-    List<Order> sortUserOrdersbyProductAsc(@Param("userIndex") Long userIndex);
 
 
+
+    @Query(value = "select availiable from (select id, availiable from products where id= :productId ) as tab" , nativeQuery = true)
+    Boolean getAvailiableBoiskoIdById(@Param("productId") Long productId);
+
+    @Query(value = "select DATEPART(HOUR, [rent_date_from])  from (select * from (select * from orders as o inner join order_products as op on op.order_id=o.id) as tab where tab.product_id = :productId) as tab1 where rent_date_from LIKE :rentDateFrom%" , nativeQuery = true)
+    List<Long> getBoiskoDisableHours(@Param("productId") Long productId, @Param("rentDateFrom") String rentDateFrom);
 
     @Query(value = "select id from (select id, availiable from products where id=1 or id=2) as tab where tab.availiable=0" , nativeQuery = true)
     List<Long> getUnavailiableBiezniaId();
