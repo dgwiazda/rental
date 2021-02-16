@@ -97,7 +97,7 @@ const App = () => {
                       imageId={[19, 20, 21]}
                       title={"Zestaw do nart"}
                       description={
-                        <div>
+                        <div className="product-description">
                           <h3>W zestawie:</h3>
                           <ul>
                             <li>narty</li>
@@ -121,7 +121,7 @@ const App = () => {
                       imageId={[22, 23]}
                       title={"Zestaw snowboardowy"}
                       description={
-                        <div>
+                        <div className="product-description">
                           <h3>W zestawie:</h3>
                           <ul>
                             <li>deska</li>
@@ -145,7 +145,7 @@ const App = () => {
                       imageId={[17, 18]}
                       title={"Zestaw do hokeja"}
                       description={
-                        <div>
+                        <div className="product-description">
                           <h3>W zestawie:</h3>
                           <ul>
                             <li>kij</li>
@@ -175,8 +175,8 @@ const App = () => {
                       imageId={[4]}
                       title={"Mata treningowa"}
                       description={
-                        <div>
-                          <h3>Szczegóły:</h3>
+                        <div className="product-description">
+                          <h3>Szcz egóły:</h3>
                           <ul>
                             <li>wymiar: 1.25x1.25x0.3</li>
                             <li>no i dobra jest</li>
@@ -225,7 +225,7 @@ const App = () => {
                       imageId={[14]}
                       title={"Szyna CMP"}
                       description={
-                        <div>
+                        <div className="product-description">
                           <h3>Szczegóły:</h3>
                           <ul>
                             <li>max zgięcie: 105 &deg;</li>
@@ -247,7 +247,7 @@ const App = () => {
                       imageId={[5]}
                       title={"Orlik"}
                       description={
-                        <div>
+                        <div className="product-description">
                           <h3>Adresy:</h3>
                           <ul>
                             <li>ul. Warszawska 36</li>
@@ -270,7 +270,7 @@ const App = () => {
                       imageId={[2]}
                       title={"Hala sportowa"}
                       description={
-                        <div>
+                        <div className="product-description">
                           <h3>Adresy:</h3>
                           <ul>
                             <li>ul. Wyspiańskiego 36</li>
@@ -292,7 +292,7 @@ const App = () => {
                       imageId={[13]}
                       title={"Stadion"}
                       description={
-                        <div>
+                        <div className="product-description">
                           <h3>Adres:</h3>
                           <ul>
                             <li>ul. Brochowska 54</li>
@@ -313,7 +313,7 @@ const App = () => {
                       imageId={[3]}
                       title={"Kajak"}
                       description={
-                        <div>
+                        <div className="product-description">
                           <h3>W zestawie:</h3>
                           <ul>
                             <li>2 wiosła</li>
@@ -350,7 +350,7 @@ const App = () => {
                       imageId={[6, 7, 8]}
                       title={"Rower"}
                       description={
-                        <div>
+                        <div className="product-description">
                           <h3>Do wyboru:</h3>
                           <ul>
                             <li>kolażówka</li>
@@ -373,8 +373,8 @@ const App = () => {
                       imageId={[24, 25]}
                       title={"Zestaw Wspinaczkowy"}
                       description={
-                        <div>
-                          <h3>W zestawie</h3>
+                        <div className="product-description">
+                          <h3>W zestawie:</h3>
                           <ul>
                             <li>buty</li>
                             <li>haki</li>

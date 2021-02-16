@@ -69,6 +69,12 @@ const Styles = styled.div`
     }
   }
 
+  .product-description {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
   .nav-link {
     color: rgba(255, 255, 255, 0.8);
   }
