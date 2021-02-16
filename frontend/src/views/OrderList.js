@@ -111,14 +111,18 @@ function OrderList() {
       });
     }
     if (productsSort === 1) {
-      UserService.sortOrdersByRentDateFromAsc(currentUser.id).then((response) => {
-        setOrders(response.data);
-      });
+      UserService.sortOrdersByRentDateFromAsc(currentUser.id).then(
+        (response) => {
+          setOrders(response.data);
+        }
+      );
     }
     if (productsSort === 2) {
-      UserService.sortOrdersByRentDateFromDesc(currentUser.id).then((response) => {
-        setOrders(response.data);
-      });
+      UserService.sortOrdersByRentDateFromDesc(currentUser.id).then(
+        (response) => {
+          setOrders(response.data);
+        }
+      );
     }
     if (productsSort === 3) {
       UserService.sortOrdersByPriceAsc(currentUser.id).then((response) => {

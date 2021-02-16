@@ -179,7 +179,7 @@ const BoardAdmin = () => {
         setProducts(response.data);
       });
     }
-  }
+  };
 
   const getUsers = () => {
     AdminService.getUsers().then((response) => {
@@ -228,7 +228,7 @@ const BoardAdmin = () => {
       "Listopad",
       "Grudzień",
     ]);
-  }
+  };
 
   const getAnnually = async () => {
     var l;
@@ -242,7 +242,7 @@ const BoardAdmin = () => {
       years.push(2021 + i);
     }
     setChartLegend(years);
-  }
+  };
 
   const getChart = () => {
     getMonthly();

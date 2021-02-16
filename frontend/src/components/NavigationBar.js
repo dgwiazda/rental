@@ -11,10 +11,10 @@ const Styles = styled.div`
     width: 400px;
   }
   .dropdown-menu {
-        a:hover {
-          background-color: rgba(0,0,0,0.1);
-        }
-      }
+    a:hover {
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+  }
 `;
 
 const NavigationBar = () => {
@@ -55,7 +55,9 @@ const NavigationBar = () => {
               title={currentUser.username}
               id="basic-nav-dropdown"
             >
-              <NavDropdown.Item href="/user/orders">Zamówienia</NavDropdown.Item>
+              <NavDropdown.Item href="/user/orders">
+                Zamówienia
+              </NavDropdown.Item>
               <NavDropdown.Item href="/user/profile">Profil</NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item href="/signin" onClick={logOut}>

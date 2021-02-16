@@ -173,7 +173,7 @@ function OrderSpadochron() {
               <Container>
                 <h1>
                   Spadochron{" "}
-                  {availiableQuantity  ? (
+                  {availiableQuantity ? (
                     ""
                   ) : (
                     <span>(aktualnie niedostępny)</span>

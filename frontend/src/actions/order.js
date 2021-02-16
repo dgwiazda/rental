@@ -11,4 +11,3 @@ export const messageAddOrder = (data) => (dispatch) => {
     return Promise.resolve();
   });
 };
-

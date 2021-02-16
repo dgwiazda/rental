@@ -276,11 +276,15 @@ function OrderRower() {
                     >
                       {availiableOptions.map((option, index) => {
                         return (
-                          <option disabled={!options.includes(option)} 
+                          <option
+                            disabled={!options.includes(option)}
                             key={index}
                             className={
-                              options.includes(option) ? "" : "select-disabled disabled"
-                            }>
+                              options.includes(option)
+                                ? ""
+                                : "select-disabled disabled"
+                            }
+                          >
                             {option}
                           </option>
                         );

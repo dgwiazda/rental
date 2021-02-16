@@ -171,7 +171,8 @@ function OrderSzynaCmp() {
           ) : (
             <Styles>
               <Container>
-                <h1>Szyna CMP{" "}
+                <h1>
+                  Szyna CMP{" "}
                   {availiableQuantity ? (
                     ""
                   ) : (
