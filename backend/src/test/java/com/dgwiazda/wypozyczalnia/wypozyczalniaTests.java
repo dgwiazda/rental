@@ -1,4 +1,4 @@
-package com.bezkoder.springjwt;
+package com.dgwiazda.wypozyczalnia;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
